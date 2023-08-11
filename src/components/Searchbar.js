@@ -32,11 +32,23 @@ function Searchbar() {
   const handleOnRemove = () => {
     setMovie({});
   };
-  const handleOnAwesome = () => {
-    setAwesome((arr) => [...arr, movie]);
+  const handleOnAwesome = (movie, type) => {
+    if (boring.includes(movie)) {
+      return;
+    }
+    if (awesome.includes(movie)) {
+      return;
+    }
+    setAwesome([...awesome, movie]);
   };
-  const handleOnBoring = () => {
-    setBoring((arr) => [...arr, movie]);
+  const handleOnBoring = (movie, type) => {
+    if (awesome.includes(movie)) {
+      return;
+    }
+    if (boring.includes(movie)) {
+      return;
+    }
+    setBoring([...boring, movie]);
   };
   return (
     <>
@@ -51,8 +63,7 @@ function Searchbar() {
           />
           <button
             onClick={handleOnClick}
-            className="
-      btn btn-warning w-25 ms-2"
+            className=" btn btn-warning w-25 ms-2"
           >
             Search
           </button>
@@ -61,8 +72,8 @@ function Searchbar() {
           <Card
             movie={movie}
             handleOnRemove={handleOnRemove}
-            handleOnAwesome={handleOnAwesome}
-            handleOnBoring={handleOnBoring}
+            handleOnAwesome={() => handleOnAwesome(movie, "awesome")}
+            handleOnBoring={() => handleOnBoring(movie, "boring")}
           />
         )}
         {isError && (
@@ -71,7 +82,7 @@ function Searchbar() {
           </div>
         )}
       </div>
-      <Like boring={boring} />
+      <Like boring={boring} awesome={awesome} />
     </>
   );
 }

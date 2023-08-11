@@ -1,33 +1,63 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Card from "./Card";
-function Like({ boring }) {
+import { Tab, Tabs } from "react-bootstrap";
+
+function Like({ boring, awesome }) {
+  const [boringlist, setBoringList] = useState([]);
+  const [awesomeList, setAwesomeList] = useState([]);
+  useEffect(() => {
+    setBoringList(boring);
+  }, [boring]);
+  useEffect(() => {
+    setAwesomeList(awesome);
+  }, [awesome]);
+  const handleOnRemove = (type) => {
+    if (type === "boring") {
+      console.log("i will rem boring");
+    } else if (type === "awesome") {
+      console.log("i will remove awesome");
+    }
+  };
   return (
     <>
       <div className="container mt-3 p-2 bg-black bg-opacity-25  rounded">
-        <div
-          className="btn-group"
-          role="group"
-          aria-label="like dislike section"
+        <Tabs
+          id="controlled-tabs"
+          selectedTabClassName="bg-danger"
+          defaultActiveKey="profile"
+          className="mb-3 text-danger"
         >
-          <button type="button" className="btn btn-danger">
-            All
-          </button>
-          <button type="button" className="btn btn-warning">
-            Awesome
-          </button>
-          <button type="button" className="btn btn-success">
-            Boring
-          </button>
-        </div>
-        <div className="text-warning mt-2 p-2">
-          <p>0 match found</p>
-        </div>
-      </div>
-      <div>
-        {boring.length &&
-          boring.map((item) => {
-            <Card movie={item} />;
-          })}
+          <Tab eventKey="all" title="All">
+            <div className="d-flex flex-wrap">
+              {awesomeList.length > 0 &&
+                awesomeList.map((item) => <Card movie={item} />)}
+              {boringlist.length > 0 &&
+                boringlist.map((item) => <Card movie={item} />)}
+            </div>{" "}
+          </Tab>
+          <Tab eventKey="awesome" title="Awesome">
+            <div className="d-flex flex-wrap">
+              {awesomeList.length > 0 &&
+                awesomeList.map((item) => (
+                  <Card
+                    movie={item}
+                    handleOnRemove={() => handleOnRemove("awesome")}
+                  />
+                ))}
+            </div>
+          </Tab>
+          <Tab eventKey="boring" title="Boring">
+            <div className="d-flex flex-wrap">
+              {boringlist.length > 0 &&
+                boringlist.map((item) => (
+                  <Card
+                    movie={item}
+                    handleOnRemove={() => handleOnRemove("boring")}
+                  />
+                ))}
+            </div>
+          </Tab>
+        </Tabs>
       </div>
     </>
   );
