@@ -5,8 +5,7 @@ import Card from "./Card";
 function Searchbar() {
   const [form, setForm] = useState("");
   const [movie, setMovie] = useState({});
-  const [awesome, setAwesome] = useState([]);
-  const [boring, setBoring] = useState([]);
+  const [movieList, setMovieList] = useState([]);
   const [isError, setIsError] = useState(false);
   const url = "https://www.omdbapi.com/?apikey=53df77d2&t=";
 
@@ -29,27 +28,19 @@ function Searchbar() {
       setMovie({});
     }
   };
-  const handleOnRemove = () => {
+  const clear = () => {
+    setForm("");
     setMovie({});
   };
-  const handleOnAwesome = (movie, type) => {
-    if (boring.includes(movie)) {
-      return;
-    }
-    if (awesome.includes(movie)) {
-      return;
-    }
-    setAwesome([...awesome, movie]);
+  const handleOnRemove = () => {
+    clear();
   };
-  const handleOnBoring = (movie, type) => {
-    if (awesome.includes(movie)) {
-      return;
-    }
-    if (boring.includes(movie)) {
-      return;
-    }
-    setBoring([...boring, movie]);
+  const handleOnAdd = (movie) => {
+    setMovieList([...movieList, movie]);
+    console.log(movie);
+    clear();
   };
+
   return (
     <>
       <div className="d-flex flex-column align-items-center container mt-5 p-2 bg-black bg-opacity-25 rounded">
@@ -72,8 +63,8 @@ function Searchbar() {
           <Card
             movie={movie}
             handleOnRemove={handleOnRemove}
-            handleOnAwesome={() => handleOnAwesome(movie, "awesome")}
-            handleOnBoring={() => handleOnBoring(movie, "boring")}
+            handleOnAwesome={() => handleOnAdd(movie, (movie.type = "awesome"))}
+            handleOnBoring={() => handleOnAdd(movie, (movie.type = "boring"))}
           />
         )}
         {isError && (
@@ -82,7 +73,7 @@ function Searchbar() {
           </div>
         )}
       </div>
-      <Like boring={boring} awesome={awesome} />
+      <Like movieList={movieList} />
     </>
   );
 }

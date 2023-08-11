@@ -13,17 +13,25 @@ function Card({ movie, handleOnRemove, handleOnAwesome, handleOnBoring }) {
           <p className="card-text">
             <b>Awards:</b> {movie.Awards}
           </p>
+          {movie.type && (
+            <p className="card-text">
+              <b>Type:</b> {movie.type}
+            </p>
+          )}
 
           <div className="d-flex justify-content-between mb-1">
             {handleOnAwesome && (
-              <button className="btn btn-success" onClick={handleOnAwesome}>
+              <button
+                className="btn btn-success"
+                onClick={() => handleOnAwesome(movie, "awesome")}
+              >
                 Awesome
               </button>
             )}
             {handleOnBoring && (
               <button
                 className="btn btn-warning text-light "
-                onClick={handleOnBoring}
+                onClick={() => handleOnBoring(movie, "boring")}
               >
                 Boring
               </button>
