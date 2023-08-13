@@ -1,11 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
-import Like from "./Like";
 import Card from "./Card";
-function Searchbar() {
+function Searchbar({ handleOnAdd }) {
   const [form, setForm] = useState("");
   const [movie, setMovie] = useState({});
-  const [movieList, setMovieList] = useState([]);
   const [isError, setIsError] = useState(false);
   const url = "https://www.omdbapi.com/?apikey=53df77d2&t=";
 
@@ -28,19 +26,15 @@ function Searchbar() {
       setMovie({});
     }
   };
-  const clear = () => {
+  const handleAddMovieAndClear = (movie, type) => {
+    handleOnAdd(movie, type);
     setForm("");
     setMovie({});
   };
-  const handleOnRemove = () => {
-    clear();
+  const handleOnRemove = (e) => {
+    e.preventDefault();
+    setMovie({});
   };
-  const handleOnAdd = (movie) => {
-    setMovieList([...movieList, movie]);
-    console.log(movie);
-    clear();
-  };
-
   return (
     <>
       <div className="d-flex flex-column align-items-center container mt-5 p-2 bg-black bg-opacity-25 rounded">
@@ -63,8 +57,7 @@ function Searchbar() {
           <Card
             movie={movie}
             handleOnRemove={handleOnRemove}
-            handleOnAwesome={() => handleOnAdd(movie, (movie.type = "awesome"))}
-            handleOnBoring={() => handleOnAdd(movie, (movie.type = "boring"))}
+            handleOnAdd={handleAddMovieAndClear}
           />
         )}
         {isError && (
@@ -73,7 +66,6 @@ function Searchbar() {
           </div>
         )}
       </div>
-      <Like movieList={movieList} />
     </>
   );
 }

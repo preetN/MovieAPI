@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Card from "./Card";
-import { Tab, Tabs } from "react-bootstrap";
 
-function Like({ movieList }) {
+function Like({ handleOnRemove, movieList }) {
   const [displayList, setDisplayList] = useState([]);
   useEffect(() => {
     setDisplayList(movieList);
@@ -10,22 +9,38 @@ function Like({ movieList }) {
 
   const filterMovie = (filterBy) => {
     console.log("Filter by :" + filterBy);
+    if (filterBy === "all") {
+      setDisplayList(movieList);
+    } else {
+      const filterarr = movieList.filter((movie) => movie.choice === filterBy);
+      setDisplayList(filterarr);
+      console.log(filterarr);
+    }
   };
-  const removeMovieList = (movie) => {
-    const newArr = movieList.filter((m) => m.imdbID !== movie.imdbID);
-    setDisplayList(newArr);
-  };
+
   return (
     <>
       <div className="container mt-3 p-2 bg-black bg-opacity-25  rounded">
         <div className="btn-group" role="group" aria-label="display list">
-          <button type="button" className="btn btn-info">
+          <button
+            type="button"
+            className="btn btn-info"
+            onClick={() => filterMovie("all")}
+          >
             All
           </button>
-          <button type="button" className="btn btn-warning">
+          <button
+            type="button"
+            className="btn btn-warning"
+            onClick={() => filterMovie("awesome")}
+          >
             Awesome
           </button>
-          <button type="button" className="btn btn-danger">
+          <button
+            type="button"
+            className="btn btn-danger"
+            onClick={() => filterMovie("boring")}
+          >
             Boring
           </button>
         </div>
@@ -35,7 +50,7 @@ function Like({ movieList }) {
               <Card
                 key={item.imdbID}
                 movie={item}
-                handleOnRemove={removeMovieList}
+                handleOnRemove={() => handleOnRemove(item)}
               />
             ))}
         </div>

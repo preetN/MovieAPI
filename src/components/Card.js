@@ -1,6 +1,6 @@
 import React from "react";
 
-function Card({ movie, handleOnRemove, handleOnAwesome, handleOnBoring }) {
+function Card({ movie, handleOnRemove, handleOnAdd }) {
   return (
     <>
       <div className="card w-25 m-4 ">
@@ -18,25 +18,22 @@ function Card({ movie, handleOnRemove, handleOnAwesome, handleOnBoring }) {
               <b>Type:</b> {movie.type}
             </p>
           )}
-
-          <div className="d-flex justify-content-between mb-1">
-            {handleOnAwesome && (
+          {handleOnAdd && (
+            <div className="d-flex justify-content-between mb-1">
               <button
                 className="btn btn-success"
-                onClick={() => handleOnAwesome(movie, "awesome")}
+                onClick={() => handleOnAdd(movie, "awesome")}
               >
                 Awesome
               </button>
-            )}
-            {handleOnBoring && (
               <button
                 className="btn btn-warning text-light "
-                onClick={() => handleOnBoring(movie, "boring")}
+                onClick={() => handleOnAdd(movie, "boring")}
               >
                 Boring
               </button>
-            )}
-          </div>
+            </div>
+          )}
           {handleOnRemove && (
             <div className="d-grid">
               <button
